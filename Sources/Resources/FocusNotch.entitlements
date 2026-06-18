@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	  FocusNotch is distributed outside the Mac App Store (direct download /
+	  notarized DMG) so it can drive Focus modes through the `shortcuts` CLI.
+	  App Sandbox is therefore disabled. If you target the Mac App Store you
+	  must enable the sandbox and replace the Process-based Focus integration
+	  with an App Intent. See README "Distribution".
+	-->
+	<key>com.apple.security.app-sandbox</key>
+	<false/>
+</dict>
+</plist>

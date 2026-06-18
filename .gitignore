@@ -1,0 +1,21 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+*.xcscmblueprint
+xcuserdata/
+*.moved-aside
+
+# Generated project (regenerate with `xcodegen generate`)
+FocusNotch.xcodeproj/
+
+# macOS
+.DS_Store
+
+# SwiftPM
+.swiftpm/
+.build/
+
+# Misc
+*.dSYM.zip
+*.dSYM
