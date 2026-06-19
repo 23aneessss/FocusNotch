@@ -1,147 +1,132 @@
 <div align="center">
 
-<img src="assets/icon.png" width="128" alt="FocusNotch icon" />
+<img src="assets/icon.png" width="120" alt="FocusNotch icon" />
 
 # FocusNotch
 
-**Make your MacBook's notch useful — a Pomodoro timer that lives in the notch.**
+### Make your MacBook's notch useful — a Pomodoro timer that lives in the notch.
 
-When you're not looking, FocusNotch shows the time left in your session on the
-left of the notch and your session progress on the right. Hover over it and the
-notch expands into a full control panel: a hero countdown, a progress bar,
-session tracker, transport controls, and a one-tap Do Not Disturb toggle.
+[![macOS](https://img.shields.io/badge/macOS-14%2B-000000?logo=apple&logoColor=white)](https://www.apple.com/macos/)
+[![Swift](https://img.shields.io/badge/Swift-5.9-F05138?logo=swift&logoColor=white)](https://swift.org)
+[![SwiftUI](https://img.shields.io/badge/UI-SwiftUI-0A84FF)](https://developer.apple.com/xcode/swiftui/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-3DA639)](LICENSE)
+[![Made for the notch](https://img.shields.io/badge/made_for-the_notch-FF6B5C)](#)
+
+<br />
+
+<img src="docs/showcase.png" width="720" alt="FocusNotch collapsed and expanded" />
 
 </div>
 
 ---
 
-## Features
+When you're heads-down, FocusNotch shows the **time left** on the left of your notch
+and your **session progress** on the right. Glance up — that's it. Move your cursor
+to the notch and it **expands** into a full control panel: a big countdown, a
+progress bar, your session tracker, transport controls, and a one-tap **Do Not
+Disturb** toggle. No window. No Dock icon. Just your notch, finally doing something.
 
-- 🎯 **Notch-native UI** — a panel pinned over the physical notch that floats above every Space and over fullscreen apps. It's click-through when collapsed, so your menu bar keeps working.
-- ⏳ **At-a-glance status** — remaining time on the left of the notch, session dots on the right.
-- 🖱️ **Hover to expand** — smooth spring animation into a progress ring, "Session X of Y", next-phase preview, and Start / Pause / Skip / Reset controls.
-- 🍅 **Real Pomodoro engine** — configurable focus / short break / long break durations, sessions-before-long-break cycles, and optional auto-start. Timing is anchored to an absolute end date, so it stays accurate across sleep and timer coalescing.
-- 🌙 **Focus / Do Not Disturb** — automatically enable a macOS Focus while you work, via the Shortcuts app (see [Focus setup](#focus--do-not-disturb-setup)).
+## ✨ Features
+
+- 🎯 **Notch-native** — a panel pinned over the physical notch, floating above every Space and over fullscreen apps. Click-through when collapsed, so your menu bar keeps working.
+- 👀 **Glanceable** — remaining time on the left, session dots on the right. Idle? It stays a clean, invisible notch.
+- 🖱️ **Hover to expand** — a smooth, BoringNotch-style drop-down with the camera notch flowing into the panel (concave "ears", rounded corners, pure `#000` black).
+- 🍅 **A real Pomodoro engine** — configurable focus / short break / long break, cycles before a long break, optional auto-start. The countdown is anchored to an absolute end time, so it stays accurate across sleep and app nap.
+- 🌙 **Do Not Disturb** — toggle macOS Focus from the notch, or have it follow your work sessions automatically.
 - 🔔 **Notifications & sounds** on every phase change.
-- 📊 **Menu bar item** mirroring the timer, with the same controls — handy on external displays.
-- 🚀 **Launch at login** (via `SMAppService`).
-- 🖥️ **Works without a notch** — optionally shows a simulated "island" at the top-center of any Mac.
+- 📊 **Menu bar timer** mirroring the countdown, with the same controls — handy on external displays.
+- 🚀 **Launch at login** and a friendly first-run **onboarding**.
+- 🖥️ **No notch? No problem** — optionally shows a centered "island" on any Mac.
 
-## Requirements
+## 📦 Install
 
-- macOS 14 (Sonoma) or later
-- Xcode 16+ (developed with Xcode 26)
-- [XcodeGen](https://github.com/yonyz/XcodeGen) (`brew install xcodegen`) to generate the project
+**Download** — grab the latest `FocusNotch.dmg` from the
+[Releases](../../releases) page, open it, and drag FocusNotch to Applications.
 
-## Build & run
+> Until the app is notarized, macOS may warn on first open — **right-click the app → Open**, then confirm. (Notarization is on the roadmap.)
+
+**Or build from source:**
 
 ```bash
-# 1. Generate the Xcode project from project.yml
+brew install xcodegen        # one-time
+git clone <your-repo-url> && cd mac0S-notch-extension
 xcodegen generate
-
-# 2. Open it
-open FocusNotch.xcodeproj
-
-# 3. Select the "FocusNotch" scheme and press ⌘R
+open FocusNotch.xcodeproj      # ⌘R to run
 ```
 
-Or build entirely from the command line:
+FocusNotch is an **agent app** (no Dock icon) — after launch, look for the timer in
+your menu bar and the panel over your notch.
 
-```bash
-xcodegen generate
-xcodebuild -project FocusNotch.xcodeproj -scheme FocusNotch -configuration Release build
-```
+## 🌙 Do Not Disturb setup
 
-> FocusNotch is an **agent app** (`LSUIElement`) — it has no Dock icon. After
-> launching, look for the timer in your menu bar and the panel over your notch.
-> Quit it from the menu bar item.
-
-### Regenerating the app icon
-
-The icon is generated from code so there are no binary assets to hand-edit:
-
-```bash
-bash Tools/make_icons.sh
-```
-
-## Focus / Do Not Disturb setup
-
-Apple provides no public API to toggle Focus, so FocusNotch runs a **Shortcut**
-that accepts `on`/`off` via standard input. It defaults to the free
+Apple provides no public API for Focus, so FocusNotch runs a **Shortcut** that
+accepts `on`/`off`. It defaults to the free
 [`macos-focus-mode`](https://github.com/sindresorhus/macos-focus-mode) shortcut:
 
 ```bash
 npx macos-focus-mode install
 ```
 
-That installs a shortcut named `macos-focus-mode`. The moon button on the notch
-then toggles Do Not Disturb; enable **Settings → Focus → "Enable Do Not Disturb
-during focus sessions"** to have it follow your work sessions automatically.
+Then the moon button toggles Do Not Disturb — no Accessibility or other permissions
+needed. Prefer your own shortcut? Point FocusNotch at it in **Settings → Focus**.
 
-Prefer your own shortcut? Create one that takes text input and runs **Set Focus
-→ Do Not Disturb**, then set its name in **Settings → Focus**. The first time
-the app runs it, macOS asks once to allow FocusNotch to run the shortcut.
+## 🧠 How it works
 
-## Architecture
+A borderless, non-activating `NSPanel` is pinned over the notch at the `.statusBar`
+window level and joins every Space. `NotchController` tracks the cursor with paired
+global + local `NSEvent` monitors (needed because the panel toggles
+`ignoresMouseEvents` between states) and flips an observable `isOpen` flag, which
+`NotchRootView` animates. The collapsed gap is kept perfectly centered on the
+physical notch by using equal side widths, and expanded content sits **below** the
+notch strip so the camera never hides it.
 
 ```
 Sources/
-├── App/            App lifecycle, shared environment
-├── Pomodoro/       PomodoroEngine (state machine), PomodoroSettings, PomodoroPhase
-├── Focus/          FocusController (Shortcuts CLI bridge)
-├── System/         Notifications, sounds, launch-at-login, NSScreen+notch, formatting
-├── Notch/          NotchWindow (NSPanel), NotchController (hover state machine),
-│                   NotchGeometry, NotchModel, status bar + settings window controllers
-└── Views/          SwiftUI: NotchShape, NotchRootView, Closed/Open notch views,
-                    reusable components, SettingsView
+├── App/        Lifecycle, shared environment
+├── Pomodoro/   PomodoroEngine (state machine), settings, phases
+├── Focus/      FocusController (Do Not Disturb via Shortcuts)
+├── System/     Notifications, sounds, launch-at-login, screen + time helpers
+├── Notch/      NSPanel, hover controller, geometry, status bar, settings & onboarding windows
+└── Views/      SwiftUI: notch shape, collapsed/expanded views, components, onboarding, settings
 ```
 
-**How the notch panel works.** A borderless, non-activating `NSPanel`
-(`Sources/Notch/NotchWindow.swift`) is pinned over the notch at the `.statusBar`
-window level with an all-Spaces collection behavior. `NotchController` tracks the
-cursor with paired global + local `NSEvent` monitors (needed because the panel
-toggles `ignoresMouseEvents` between collapsed/expanded), and flips an observable
-`isOpen` flag. The SwiftUI `NotchRootView` animates the `NotchShape` and content
-between the two states.
+## 🚀 Building a release (DMG)
 
-## Building a release (DMG)
-
-FocusNotch ships as a **direct download** (notarized DMG), not the Mac App Store,
-because Do Not Disturb runs the `shortcuts` CLI — which the App Store sandbox
-forbids. The whole pipeline (build → sign → DMG → notarize → staple) is one
-command:
+The whole pipeline — build → sign → DMG → notarize → staple — is one command:
 
 ```bash
 FN_SIGN_ID="Developer ID Application: Your Name (TEAMID)" \
 FN_NOTARY_PROFILE="FocusNotchNotary" \
 ./scripts/release.sh
-# → dist/FocusNotch-<version>.dmg  (signed, notarized, stapled)
+# → dist/FocusNotch-<version>.dmg
 ```
 
-Omit `FN_NOTARY_PROFILE` to build a signed-but-un-notarized DMG for local testing.
+Omit `FN_NOTARY_PROFILE` for a signed-but-un-notarized build for local testing.
+Notarization requires a paid Apple Developer membership, a **Developer ID
+Application** certificate, and a `notarytool` keychain profile — see the header of
+[`scripts/release.sh`](scripts/release.sh) for the one-time setup.
 
-**One-time prerequisites for notarization:**
+## 🗺️ Roadmap
 
-1. A **paid Apple Developer Program** membership.
-2. A **Developer ID Application** certificate — Xcode → Settings → Accounts →
-   Manage Certificates → **+** → *Developer ID Application*.
-3. A notarytool **keychain profile** (stores your credentials once):
-   ```bash
-   xcrun notarytool store-credentials "FocusNotchNotary" \
-     --apple-id "you@example.com" --team-id "YOURTEAMID" \
-     --password "app-specific-password"   # create at appleid.apple.com
-   ```
+- [ ] Notarized DMG release
+- [ ] Focus stats & streaks
+- [ ] Global hotkey (start / pause / skip)
+- [ ] Session presets (25/5, 50/10, deep work)
+- [ ] Theming & accent color
+- [ ] Localization (FR included)
 
-Hardened Runtime is already enabled, and `--timestamp --options runtime` are
-applied by the script — the requirements notarization checks for.
+## 🤝 Contributing
 
-> Mac App Store instead? Enable App Sandbox in
-> `Sources/Resources/FocusNotch.entitlements` and replace the `shortcuts`-based
-> Focus integration in `FocusController` with an App Intent.
+Issues and PRs welcome. The project is generated with XcodeGen — edit `project.yml`
+and run `xcodegen generate` after adding or removing files. The app icon and the
+banner above are generated from code in [`Tools/`](Tools).
 
-## License
+## 📄 License
 
-Released under the [MIT License](LICENSE) — good for open-sourcing. If you intend
-to **sell a closed-source build**, replace `LICENSE` with your own commercial /
-EULA terms before distributing. Fill in `<YOUR NAME>` in the license header
-either way.
+[MIT](LICENSE) — free to use, fork, and build on. If you plan to **sell a
+closed-source build**, swap in your own commercial / EULA terms first.
+
+<div align="center">
+<br />
+<sub>Built with SwiftUI · Make your notch useful.</sub>
+</div>
