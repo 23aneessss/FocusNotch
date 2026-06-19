@@ -31,11 +31,10 @@ final class PomodoroSettings {
         }
     }
 
-    // MARK: Focus / Do Not Disturb (Shortcuts integration)
+    // MARK: Focus / Do Not Disturb
 
+    /// Automatically enable macOS Do Not Disturb during focus sessions.
     var focusEnabled: Bool { didSet { defaults.set(focusEnabled, forKey: Keys.focusEnabled) } }
-    var focusOnShortcut: String { didSet { defaults.set(focusOnShortcut, forKey: Keys.focusOnShortcut) } }
-    var focusOffShortcut: String { didSet { defaults.set(focusOffShortcut, forKey: Keys.focusOffShortcut) } }
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
@@ -54,8 +53,6 @@ final class PomodoroSettings {
         launchAtLogin = defaults.bool(forKey: Keys.launchAtLogin)
 
         focusEnabled = defaults.bool(forKey: Keys.focusEnabled)
-        focusOnShortcut = defaults.string(forKey: Keys.focusOnShortcut) ?? "Focus On"
-        focusOffShortcut = defaults.string(forKey: Keys.focusOffShortcut) ?? "Focus Off"
     }
 
     /// Duration in seconds for a given phase.
@@ -105,7 +102,5 @@ final class PomodoroSettings {
         static let showOnNonNotchDisplays = "showOnNonNotchDisplays"
         static let launchAtLogin = "launchAtLogin"
         static let focusEnabled = "focusEnabled"
-        static let focusOnShortcut = "focusOnShortcut"
-        static let focusOffShortcut = "focusOffShortcut"
     }
 }
